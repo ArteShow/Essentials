@@ -1,0 +1,6 @@
+.gradle
+server
+bin
+build
+.vscode
+.class*

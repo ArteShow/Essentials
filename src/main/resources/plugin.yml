@@ -1,0 +1,16 @@
+name: Essentials
+version: '1.0.0'
+main: dev.arteshow.essentials.Essentials
+api-version: '26.1'
+
+author: ArteShow
+description: Custom utility plugin for FamilySteam
+
+commands:
+  es:
+    description: Essentials main command
+    usage: /es
+    aliases:
+      - essentials
+
+debug: false
