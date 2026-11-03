@@ -7,8 +7,13 @@ import org.bukkit.plugin.java.JavaPlugin;
 import dev.arteshow.essentials.commands.EssentialsCommand;
 import dev.arteshow.essentials.storage.Database;
 import dev.arteshow.essentials.storage.MigrationManager;
+import dev.arteshow.essentials.storage.repositories.PlayerPositionRepository;
+import dev.arteshow.essentials.storage.repositories.PlayerSettingsRepository;
 
 public final class Essentials extends JavaPlugin {
+
+    private PlayerSettingsRepository playerSettingsRepository;
+    private PlayerPositionRepository playerPositionRepository;
 
     private Database database;
 
@@ -28,6 +33,12 @@ public final class Essentials extends JavaPlugin {
             getLogger().severe("Failed to initialize database: " + e.getMessage());
             getServer().getPluginManager().disablePlugin(this);
         }
+
+        playerSettingsRepository
+                = new PlayerSettingsRepository(database.getConnection());
+
+        playerPositionRepository
+                = new PlayerPositionRepository(database.getConnection());
 
         getLogger().info("Essentials enabled");
     }
