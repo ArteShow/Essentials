@@ -7,9 +7,7 @@ import java.sql.SQLException;
 import java.util.Optional;
 import java.util.UUID;
 
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.World;
+import dev.arteshow.essentials.storage.models.PlayerPosition;
 
 public final class PlayerPositionRepository {
 
@@ -19,7 +17,7 @@ public final class PlayerPositionRepository {
         this.connection = connection;
     }
 
-    public void savePosition(UUID uuid, Location location) throws SQLException {
+    public void savePosition(UUID uuid, PlayerPosition position) throws SQLException {
         String sql = """
                 INSERT INTO player_positions (uuid, world, x, y, z, yaw, pitch)
                 VALUES (?, ?, ?, ?, ?, ?, ?)
@@ -34,18 +32,18 @@ public final class PlayerPositionRepository {
 
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, uuid.toString());
-            statement.setString(2, location.getWorld().getName());
-            statement.setDouble(3, location.getX());
-            statement.setDouble(4, location.getY());
-            statement.setDouble(5, location.getZ());
-            statement.setFloat(6, location.getYaw());
-            statement.setFloat(7, location.getPitch());
+            statement.setString(2, position.getWorld());
+            statement.setDouble(3, position.getX());
+            statement.setDouble(4, position.getY());
+            statement.setDouble(5, position.getZ());
+            statement.setFloat(6, position.getYaw());
+            statement.setFloat(7, position.getPitch());
 
             statement.executeUpdate();
         }
     }
 
-    public Optional<Location> getPosition(UUID uuid) throws SQLException {
+    public Optional<PlayerPosition> getPosition(UUID uuid) throws SQLException {
         String sql = """
                 SELECT world, x, y, z, yaw, pitch
                 FROM player_positions
@@ -60,22 +58,20 @@ public final class PlayerPositionRepository {
                     return Optional.empty();
                 }
 
-                World world = Bukkit.getWorld(result.getString("world"));
+                String world = result.getString("world");
 
                 if (world == null) {
                     return Optional.empty();
                 }
 
-                Location location = new Location(
-                        world,
+                PlayerPosition position = new PlayerPosition(world,
                         result.getDouble("x"),
                         result.getDouble("y"),
                         result.getDouble("z"),
                         result.getFloat("yaw"),
-                        result.getFloat("pitch")
-                );
+                        result.getFloat("pitch"));
 
-                return Optional.of(location);
+                return Optional.of(position);
             }
         }
     }
