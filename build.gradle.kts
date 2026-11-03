@@ -18,6 +18,7 @@ dependencies {
     )
 
     compileOnly("org.mvplugins.multiverse.core:multiverse-core:5.8.2")
+    compileOnly("org.xerial:sqlite-jdbc:3.54.1.0")
 }
 
 java {

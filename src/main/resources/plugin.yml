@@ -16,4 +16,7 @@ commands:
 depend:
   - Multiverse-Core
 
+libraries:
+  - org.xerial:sqlite-jdbc:3.54.1.0
+
 debug: false
