@@ -10,17 +10,20 @@ import dev.arteshow.essentials.storage.MigrationManager;
 
 public final class Essentials extends JavaPlugin {
 
-    @Override 
+    private Database database;
+
+    @Override
     public void onEnable() {
         getCommand("es").setExecutor(new EssentialsCommand());
 
         try {
-            Database db = new Database(getDataFolder());
-            db.open();
+            database = new Database(getDataFolder());
 
-            MigrationManager migrationManager = new MigrationManager(db.getConnection());
+            database.open();
+
+            MigrationManager migrationManager = new MigrationManager(database.getConnection());
             migrationManager.applyMigrations();
-            
+
         } catch (SQLException e) {
             getLogger().severe("Failed to initialize database: " + e.getMessage());
             getServer().getPluginManager().disablePlugin(this);
@@ -29,8 +32,17 @@ public final class Essentials extends JavaPlugin {
         getLogger().info("Essentials enabled");
     }
 
-    @Override 
+    @Override
     public void onDisable() {
+        try {
+            if (database.getConnection() != null) {
+                database.close();
+            }
+        } catch (SQLException e) {
+            getLogger().severe("Failed to close database: " + e.getMessage());
+
+        }
+
         getLogger().info("Essentials disabled");
     }
 }
