@@ -15,15 +15,17 @@ public final class Database {
     }
 
     public void open() throws SQLException {
-        if (!connection.isClosed()) {
-            return;
-        }
-
         if (!databaseFile.getParentFile().exists()) {
             databaseFile.getParentFile().mkdirs();
         }
 
-        this.connection = DriverManager.getConnection("jdbc:sqlite:" + databaseFile.getAbsolutePath());;
+        if (connection != null && !connection.isClosed()) {
+            return;
+        }
+
+        this.connection = DriverManager.getConnection(
+                "jdbc:sqlite:" + databaseFile.getAbsolutePath()
+        );
     }
 
     public Connection getConnection() {

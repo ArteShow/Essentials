@@ -9,6 +9,8 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 
+import dev.arteshow.essentials.commands.subCommands.settings.SettingsCommand;
+
 public final class EssentialTabCompleter implements TabCompleter {
 
     private final Map<String, SubCommand> commands;
@@ -35,9 +37,14 @@ public final class EssentialTabCompleter implements TabCompleter {
         } else if (args.length == 2
                 && args[0].equalsIgnoreCase("settings")) {
 
-            if ("restorePosition".toLowerCase()
-                    .startsWith(args[1].toLowerCase())) {
-                suggestions.add("restorePosition");
+            SubCommand settings = commands.get("settings");
+
+            if (settings instanceof SettingsCommand settingsCommand) {
+                for (String name : settingsCommand.getCommands().keySet()) {
+                    if (name.startsWith(args[1].toLowerCase())) {
+                        suggestions.add(name);
+                    }
+                }
             }
 
         } else if (args.length == 3

@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import dev.arteshow.essentials.storage.migrations.V1__InitialSchema;
+import dev.arteshow.essentials.storage.migrations.V2__FixPlayerPositions;
 
 public final class MigrationManager {
 
@@ -23,6 +24,7 @@ public final class MigrationManager {
 
     private void registerMigrations() {
         migrations.add(new V1__InitialSchema());
+        migrations.add(new V2__FixPlayerPositions());
     }
 
     private boolean isApplied(int version) throws SQLException {

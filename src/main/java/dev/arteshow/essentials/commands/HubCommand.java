@@ -19,7 +19,7 @@ public class HubCommand implements SubCommand {
             MultiverseCoreApi core = MultiverseCoreApi.get();
 
             var hub = core.getWorldManager()
-                    .getLoadedWorld("main")
+                    .getLoadedWorld("lobby")
                     .getOrNull();
 
             if (hub == null) {

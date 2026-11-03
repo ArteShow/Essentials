@@ -1,5 +1,6 @@
 package dev.arteshow.essentials.commands;
 
+import java.util.Arrays;
 import java.util.HashMap;
 
 import org.bukkit.command.Command;
@@ -8,7 +9,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import dev.arteshow.essentials.commands.subCommands.HelpCommand;
-import dev.arteshow.essentials.commands.subCommands.settings.RestorePositionCommand;
+import dev.arteshow.essentials.commands.subCommands.settings.SettingsCommand;
 import dev.arteshow.essentials.storage.repositories.PlayerPositionRepository;
 import dev.arteshow.essentials.storage.repositories.PlayerSettingsRepository;
 
@@ -23,11 +24,12 @@ public final class EssentialsCommand implements CommandExecutor {
     ) {
         registerCommand(new HelpCommand());
         registerCommand(new HubCommand());
-        new RestorePositionCommand(
+
+        registerCommand(new SettingsCommand(
                 plugin,
                 playerSettingsRepository,
                 playerPositionRepository
-        );
+        ));
     }
 
     private void registerCommand(SubCommand command) {
@@ -50,6 +52,9 @@ public final class EssentialsCommand implements CommandExecutor {
             return false;
         }
 
-        return subcommand.execute(sender, args);
+        return subcommand.execute(
+                sender,
+                Arrays.copyOfRange(args, 1, args.length)
+        );
     }
 }
