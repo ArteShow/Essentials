@@ -15,11 +15,7 @@ public final class Database {
     }
 
     public void open() throws SQLException {
-        try {
-            if (!connection.isClosed()) {
-                return;
-            }
-        } catch (SQLException e) {
+        if (!connection.isClosed()) {
             return;
         }
 
@@ -34,13 +30,9 @@ public final class Database {
         return connection;
     }
 
-    public void close() {
-        try {
-            if (connection != null && !connection.isClosed()) {
-                connection.close();
-            }
-        } catch (SQLException err){
-            //panic(err)
+    public void close() throws SQLException {
+        if (connection != null && !connection.isClosed()) {
+            connection.close();
         }
     }
 }
