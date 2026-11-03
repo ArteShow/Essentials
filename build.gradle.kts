@@ -8,15 +8,16 @@ version = property("pluginVersion") as String
 repositories {
     mavenCentral()
 
-    maven("https://repo.papermc.io/repository/maven-public/") {
-        name = "papermc"
-    }
+    maven("https://repo.papermc.io/repository/maven-public/")
+    maven("https://repo.onarandombox.com/content/groups/public/")
 }
 
 dependencies {
     compileOnly(
         "io.papermc.paper:paper-api:${property("paperVersion")}"
     )
+
+    compileOnly("org.mvplugins.multiverse.core:multiverse-core:5.8.2")
 }
 
 java {

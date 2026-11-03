@@ -13,6 +13,7 @@ public final class EssentialsCommand implements CommandExecutor{
 
     public EssentialsCommand() {
         registerCommand(new HelpCommand());
+        registerCommand(new HubCommand());
     }
 
     private void registerCommand(SubCommand command) {
@@ -27,7 +28,7 @@ public final class EssentialsCommand implements CommandExecutor{
 
         SubCommand subcommand = commands.get(args[0].toLowerCase());
         if (subcommand == null) {
-            sender.sendMessage("§cUnknown subcommand! Use /tribbox help.");
+            sender.sendMessage("§cUnknown subcommand! Use /es help.");
             return false;
         }
 

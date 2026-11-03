@@ -13,4 +13,7 @@ commands:
     aliases:
       - essentials
 
+depend:
+  - Multiverse-Core
+
 debug: false
