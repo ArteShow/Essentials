@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import dev.arteshow.essentials.commands.EssentialsCommand;
+import dev.arteshow.essentials.managers.PositionManager;
 import dev.arteshow.essentials.storage.Database;
 import dev.arteshow.essentials.storage.MigrationManager;
 import dev.arteshow.essentials.storage.repositories.PlayerPositionRepository;
@@ -14,6 +15,7 @@ public final class Essentials extends JavaPlugin {
 
     private PlayerSettingsRepository playerSettingsRepository;
     private PlayerPositionRepository playerPositionRepository;
+    private PositionManager positionManager;
 
     private Database database;
 
@@ -40,6 +42,10 @@ public final class Essentials extends JavaPlugin {
         playerPositionRepository
                 = new PlayerPositionRepository(database.getConnection());
 
+        positionManager
+                = new PositionManager(this, playerPositionRepository, playerSettingsRepository);
+                
+        getServer().getPluginManager().registerEvents(positionManager, this);
         getLogger().info("Essentials enabled");
     }
 
