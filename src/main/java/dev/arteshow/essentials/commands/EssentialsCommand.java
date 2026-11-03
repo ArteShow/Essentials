@@ -5,19 +5,37 @@ import java.util.HashMap;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.plugin.java.JavaPlugin;
 
 import dev.arteshow.essentials.commands.subCommands.HelpCommand;
+import dev.arteshow.essentials.commands.subCommands.settings.RestorePositionCommand;
+import dev.arteshow.essentials.storage.repositories.PlayerPositionRepository;
+import dev.arteshow.essentials.storage.repositories.PlayerSettingsRepository;
 
-public final class EssentialsCommand implements CommandExecutor{
+public final class EssentialsCommand implements CommandExecutor {
+
     private final HashMap<String, SubCommand> commands = new HashMap<>();
 
-    public EssentialsCommand() {
+    public EssentialsCommand(
+            PlayerSettingsRepository playerSettingsRepository,
+            PlayerPositionRepository playerPositionRepository,
+            JavaPlugin plugin
+    ) {
         registerCommand(new HelpCommand());
         registerCommand(new HubCommand());
+        new RestorePositionCommand(
+                plugin,
+                playerSettingsRepository,
+                playerPositionRepository
+        );
     }
 
     private void registerCommand(SubCommand command) {
         commands.put(command.getName(), command);
+    }
+
+    public HashMap<String, SubCommand> getCommands() {
+        return commands;
     }
 
     @Override
